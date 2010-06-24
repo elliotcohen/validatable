@@ -68,8 +68,33 @@ Expectations do
     validation.valid?(instance)
   end
   
+  #tests for greater_than
+  expect false do
+    validation = Validatable::ValidatesNumericalityOf.new stub_everything, :some_negative_number, :only_integer => true, :greater_than => 0
+    instance = stub(:some_negative_number => "-1")
+    validation.valid?(instance)
+  end
+  
+  expect false do
+    validation = Validatable::ValidatesNumericalityOf.new stub_everything, :some_decimal, :only_integer => true, :greater_than => 0
+    instance = stub(:some_decimal => 1.23)
+    validation.valid?(instance)
+  end
+  
   expect true do
-    options = [:message, :if, :times, :level, :groups, :only_integer]
+    validation = Validatable::ValidatesNumericalityOf.new stub_everything, :some_int, :only_integer => true, :greater_than => 0
+    instance = stub(:some_int => 1)
+    validation.valid?(instance)
+  end
+  
+  expect true do
+    validation = Validatable::ValidatesNumericalityOf.new stub_everything, :some_decimal, :greater_than => 0
+    instance = stub(:some_decimal => 1.23)
+    validation.valid?(instance)
+  end
+  
+  expect true do
+    options = [:message, :if, :times, :level, :groups, :only_integer, :greater_than]
     Validatable::ValidatesNumericalityOf.new(stub_everything, :test).must_understand(options.to_blank_options_hash)
   end
   
