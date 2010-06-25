@@ -92,13 +92,7 @@ Expectations do
     instance = stub(:some_decimal => 1.23)
     validation.valid?(instance)
   end
-
-  expect false do
-    validation = Validatable::ValidatesNumericalityOf.new stub_everything, :some_non_numeric, :greater_than => 0, :allow_nil => true
-    instance = stub(:some_non_numeric => "50F")
-    validation.valid?(instance)
-  end
-    
+  
   expect true do
     options = [:message, :if, :times, :level, :groups, :only_integer, :greater_than]
     Validatable::ValidatesNumericalityOf.new(stub_everything, :test).must_understand(options.to_blank_options_hash)

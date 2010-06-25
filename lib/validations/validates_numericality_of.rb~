@@ -7,12 +7,11 @@ module Validatable
       value = value_for(instance)
       return true if allow_nil && value.nil?
       return true if allow_blank && value.blank?
-      return false if value.nil? || value.blank?
       
+      is_greater_than = self.greater_than.nil? ? true : Float(value) > self.greater_than
       value = value.to_s
       regex = self.only_integer ? /\A[+-]?\d+\Z/ : /^\d*\.{0,1}\d+$/      
-      return false if (value =~ regex).nil?
-      return self.greater_than.nil? ? true : Float(value) > self.greater_than
+      return !(value =~ regex).nil? && is_greater_than
     end
     
     def message(instance)
