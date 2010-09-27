@@ -1,17 +1,16 @@
 module Validatable 
   class ValidatesNumericalityOf < ValidationBase #:nodoc:
-    option :only_integer
-    option :greater_than
+    option :greater_than, :only_integer
     
     def valid?(instance)
       value = value_for(instance)
       return true if allow_nil && value.nil?
       return true if allow_blank && value.blank?
       return false if value.nil? || value.blank?
-      
+
       value = value.to_s
       regex = self.only_integer ? /\A[+-]?\d+\Z/ : /^\d*\.{0,1}\d+$/      
-      return false if (value =~ regex).nil?
+      return false if (value =~ regex).nil?      
       return self.greater_than.nil? ? true : Float(value) > self.greater_than
     end
     
